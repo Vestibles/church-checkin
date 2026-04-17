@@ -3,15 +3,21 @@
 import { useState } from 'react'
 import { Child } from '@/types'
 
-export default function CheckinPage() {
-  const [fullName, setFullName] = useState('')
-  const [centreNumber, setCentreNumber] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [hasChildren, setHasChildren] = useState(false)
-  const [children, setChildren] = useState<Child[]>([])
-  const [phoneError, setPhoneError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const centres = [
+    'Birmingham',
+    'BOLMA',
+    'Bristol',
+    'Coventry',
+    'Leeds',
+    'London',
+    'Luton',
+    'Manchester',
+    'Northampton',
+    'Nottingham',
+    'Sheffield',
+    'Slough',
+    'Wales'
+  ]
 
   const toTitleCase = (str: string) => {
     return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
@@ -57,7 +63,7 @@ export default function CheckinPage() {
 
     const checkinData = {
       fullName: toTitleCase(fullName),
-      centreNumber: toTitleCase(centreNumber),
+      centreNumber,
       phoneNumber,
       children: hasChildren ? normalizedChildren : [],
     }
@@ -112,13 +118,17 @@ export default function CheckinPage() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Centre</label>
-          <input
-            type="text"
+          <select
             value={centreNumber}
-            onChange={(e) => setCentreNumber(toTitleCase(e.target.value))}
+            onChange={(e) => setCentreNumber(e.target.value)}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded"
-          />
+          >
+            <option value="">Select a centre</option>
+            {centres.map(centre => (
+              <option key={centre} value={centre}>{centre}</option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Phone Number</label>
