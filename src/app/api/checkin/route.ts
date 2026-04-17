@@ -7,12 +7,13 @@ let demoCheckins: any[] = []
 
 export async function POST(request: NextRequest) {
   try {
-    const { fullName, centreNumber, phoneNumber, children } = await request.json()
+    const { fullName, centreNumber, phoneNumber, emergencyContact, children } = await request.json()
 
     const checkinData = {
       fullName,
       centreNumber,
       phoneNumber,
+      emergencyContact,
       children,
       timestamp: new Date(),
     }
