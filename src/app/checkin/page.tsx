@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Child } from '@/types'
 
+export default function CheckinPage() {
   const centres = [
     'Birmingham',
     'BOLMA',
@@ -18,6 +19,15 @@ import { Child } from '@/types'
     'Slough',
     'Wales'
   ]
+
+  const [fullName, setFullName] = useState('')
+  const [centreNumber, setCentreNumber] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [hasChildren, setHasChildren] = useState(false)
+  const [children, setChildren] = useState<Child[]>([])
+  const [phoneError, setPhoneError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const toTitleCase = (str: string) => {
     return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
