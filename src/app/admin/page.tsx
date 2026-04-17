@@ -23,14 +23,18 @@ const CustomPieTooltip = ({ active, payload }: any) => {
 
   const item = payload[0]
   const value = item.value
-  const percent = item.percent
   const age = item.payload.age
+  
+  // Access the pie instance to get total
+  const pieInstance = item.payload.pieInstance
+  const total = item.payload.total
+  const percent = total ? (value / total) * 100 : 0
 
   return (
     <div className="rounded border border-gray-300 bg-white p-3 shadow-lg">
       <div className="text-sm font-semibold">Age {age}</div>
       <div className="mt-1 text-sm">Count: {value}</div>
-      <div className="text-sm">Percentage: {percent ? `${(percent * 100).toFixed(1)}%` : '0%'}</div>
+      <div className="text-sm">Percentage: {percent.toFixed(1)}%</div>
     </div>
   )
 }
@@ -115,12 +119,19 @@ export default function AdminPage() {
       return acc
     }, {} as Record<number, number>)
 
-  const ageData = Object.entries(ageGroups)
+  const ageDataList = Object.entries(ageGroups)
     .map(([age, count]) => ({
       age: Number(age),
       count,
     }))
     .sort((a, b) => a.age - b.age)
+
+  const totalAgeCount = ageDataList.reduce((sum, item) => sum + item.count, 0)
+  
+  const ageData = ageDataList.map(item => ({
+    ...item,
+    total: totalAgeCount
+  }))
 
   const filteredCheckins = checkins.filter(checkin => {
     const matchesSearch = searchTerm === '' ||
@@ -223,7 +234,7 @@ export default function AdminPage() {
             <Bar dataKey="count" fill="#8884d8" />
           </BarChart>
         </div>
-        <div>
+        <div className="flex flex-col items-center">
           <h2 className="text-xl font-semibold mb-4">Children Ages</h2>
           <PieChart width={520} height={360}>
             <Pie
