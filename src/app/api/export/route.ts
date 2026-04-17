@@ -27,6 +27,7 @@ export async function GET() {
       'Full Name': checkin.fullName,
       'Centre Number': checkin.centreNumber,
       'Phone Number': checkin.phoneNumber,
+      'Emergency Contact': checkin.emergencyContact,
       'Children': checkin.children?.map((child: { name: string; age: number }) => `${child.name} (${child.age})`).join('; ') || '',
       'Timestamp': checkin.timestamp ? new Date(checkin.timestamp).toLocaleString() : new Date().toLocaleString(),
     }))

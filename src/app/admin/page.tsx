@@ -137,6 +137,7 @@ export default function AdminPage() {
     const matchesSearch = searchTerm === '' ||
       checkin.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       checkin.phoneNumber.includes(searchTerm) ||
+      checkin.emergencyContact.includes(searchTerm) ||
       checkin.children.some(child => child.name.toLowerCase().includes(searchTerm.toLowerCase()))
     
     const matchesCentre = filterCentre === '' || checkin.centreNumber === filterCentre
@@ -278,7 +279,7 @@ export default function AdminPage() {
               <div className="flex-1">
                 <input
                   type="text"
-                  placeholder="Search by name, phone, or child name..."
+                  placeholder="Search by name, phone, emergency contact, or child name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full rounded border border-gray-300 px-3 py-2"
@@ -306,6 +307,7 @@ export default function AdminPage() {
                     <th className="border border-gray-300 px-4 py-2">Name</th>
                     <th className="border border-gray-300 px-4 py-2">Centre</th>
                     <th className="border border-gray-300 px-4 py-2">Phone</th>
+                    <th className="border border-gray-300 px-4 py-2">Emergency Contact</th>
                     <th className="border border-gray-300 px-4 py-2">Children</th>
                     <th className="border border-gray-300 px-4 py-2">Time</th>
                   </tr>
@@ -316,6 +318,7 @@ export default function AdminPage() {
                       <td className="border border-gray-300 px-4 py-2">{checkin.fullName}</td>
                       <td className="border border-gray-300 px-4 py-2">{checkin.centreNumber}</td>
                       <td className="border border-gray-300 px-4 py-2">{checkin.phoneNumber}</td>
+                      <td className="border border-gray-300 px-4 py-2">{checkin.emergencyContact}</td>
                       <td className="border border-gray-300 px-4 py-2">
                         {checkin.children.length > 0
                           ? checkin.children.map(child => `${child.name} (${child.age})`).join(', ')

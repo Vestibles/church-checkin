@@ -23,9 +23,11 @@ export default function CheckinPage() {
   const [fullName, setFullName] = useState('')
   const [centreNumber, setCentreNumber] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [emergencyContact, setEmergencyContact] = useState('')
   const [hasChildren, setHasChildren] = useState(false)
   const [children, setChildren] = useState<Child[]>([])
   const [phoneError, setPhoneError] = useState('')
+  const [emergencyError, setEmergencyError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -40,6 +42,16 @@ export default function CheckinPage() {
       return false
     }
     setPhoneError('')
+    return true
+  }
+
+  const validateEmergencyContact = (phone: string) => {
+    const phoneRegex = /^0\d{10}$/
+    if (!phoneRegex.test(phone)) {
+      setEmergencyError('Emergency contact must be 11 digits starting with 0')
+      return false
+    }
+    setEmergencyError('')
     return true
   }
 
@@ -60,7 +72,7 @@ export default function CheckinPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!validatePhoneNumber(phoneNumber)) {
+    if (!validatePhoneNumber(phoneNumber) || !validateEmergencyContact(emergencyContact)) {
       return
     }
     
@@ -75,6 +87,7 @@ export default function CheckinPage() {
       fullName: toTitleCase(fullName),
       centreNumber,
       phoneNumber,
+      emergencyContact,
       children: hasChildren ? normalizedChildren : [],
     }
 
@@ -153,6 +166,20 @@ export default function CheckinPage() {
             className="w-full px-3 py-2 border border-gray-300 rounded"
           />
           {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Emergency Contact</label>
+          <input
+            type="tel"
+            value={emergencyContact}
+            onChange={(e) => {
+              setEmergencyContact(e.target.value)
+              if (e.target.value) validateEmergencyContact(e.target.value)
+            }}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+          />
+          {emergencyError && <p className="text-red-500 text-sm mt-1">{emergencyError}</p>}
         </div>
         <div>
           <label className="flex items-center">

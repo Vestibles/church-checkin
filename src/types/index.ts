@@ -8,6 +8,7 @@ export interface Checkin {
   fullName: string
   centreNumber: string
   phoneNumber: string
+  emergencyContact: string
   children: Child[]
   timestamp: any // Firebase timestamp
 }
