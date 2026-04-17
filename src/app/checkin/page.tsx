@@ -10,6 +10,8 @@ export default function CheckinPage() {
   const [hasChildren, setHasChildren] = useState(false)
   const [children, setChildren] = useState<Child[]>([])
   const [phoneError, setPhoneError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const toTitleCase = (str: string) => {
     return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
@@ -48,11 +50,16 @@ export default function CheckinPage() {
     
     setSubmitting(true)
 
+    const normalizedChildren = children.map(child => ({
+      ...child,
+      name: toTitleCase(child.name),
+    }))
+
     const checkinData = {
-      fullName,
-      centreNumber,
+      fullName: toTitleCase(fullName),
+      centreNumber: toTitleCase(centreNumber),
       phoneNumber,
-      children: hasChildren ? children : [],
+      children: hasChildren ? normalizedChildren : [],
     }
 
     try {
